@@ -180,7 +180,7 @@ export class ImgLoader implements OnInit {
 
       // append timestamp at the end to make URL unique
       imageUrl += 'cache_buster=' + Date.now();
-    }dasdsadadd asdadadsd
+    }
    console.log( "=======================processImageUrl================================"+imageUrl);
     return imageUrl;
   }
