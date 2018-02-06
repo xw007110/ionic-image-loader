@@ -130,7 +130,10 @@ export class ImgLoader implements OnInit {
   ) {}
 
   ngOnInit(): void {
+	  
+	  	 console.log( "=======================ngOnInit================================");
     if (this.fallbackAsPlaceholder && this.fallbackUrl) {
+			  	 console.log( "=======================fallbackAsPlaceholder================================");
       this.setImage(this.fallbackUrl, false);
     }
 
@@ -140,8 +143,10 @@ export class ImgLoader implements OnInit {
       // one example could be a list of users with their profile pictures
       // in this case, it would be useful to use the fallback image instead
       // if fallbackUrl was used as placeholder we do not need to set it again
+	  console.log( "=======================image url was not passed================================");
       if (!this.fallbackAsPlaceholder && this.fallbackUrl) {
         // we're not going to cache the fallback image since it should be locally saved
+		console.log( "======================= we're not going to cache the fallback image since it should be locally saved ================================");
         this.setImage(this.fallbackUrl);
       } else {
         this.isLoading = false;
@@ -150,6 +155,7 @@ export class ImgLoader implements OnInit {
   }
 
   private updateImage(imageUrl: string) {
+	     console.log( "=======================updateImage================================");
     this._imageLoader.getImagePath(imageUrl)
       .then((imageUrl: string) => this.setImage(imageUrl))
       .catch((error: any) => this.setImage(this.fallbackUrl || imageUrl));
@@ -160,6 +166,7 @@ export class ImgLoader implements OnInit {
    * @returns {string}
    */
   private processImageUrl(imageUrl: string): string {
+	   console.log( "=======================processImageUrl================================");
     if (this.cache === false) {
       // need to disable caching
 
@@ -173,8 +180,8 @@ export class ImgLoader implements OnInit {
 
       // append timestamp at the end to make URL unique
       imageUrl += 'cache_buster=' + Date.now();
-    }
-
+    }dasdsadadd asdadadsd
+   console.log( "=======================processImageUrl================================"+imageUrl);
     return imageUrl;
   }
 
@@ -185,21 +192,23 @@ export class ImgLoader implements OnInit {
    */
   private setImage(imageUrl: string, stopLoading: boolean = true): void {
     this.isLoading = !stopLoading;
-
+	 console.log( "=======================setImage================================");
     if (this._useImg) {
 
       // Using <img> tag
       if (!this.element) {
         // create img element if we dont have one
         this.element = this._renderer.createElement(this._element.nativeElement, 'img');
+		 console.log( "=======================createElement================================");
       }
 
       // set it's src
       this._renderer.setElementAttribute(this.element, 'src', imageUrl);
-
+ console.log( "=======================set it's src================================");
 
       if (this.fallbackUrl && !this._imageLoader.nativeAvailable) {
         this._renderer.listen(this.element, 'error', () => this._renderer.setElementAttribute(this.element, 'src', this.fallbackUrl));
+		 console.log( "======================= fallbackUrl  error  ================================");
       }
 
     } else {
@@ -207,16 +216,16 @@ export class ImgLoader implements OnInit {
       // Not using <img> tag
 
       this.element = this._element.nativeElement;
-
+console.log( "======================= not  _useImg  ================================");
       for (let prop in propMap) {
         if (this[prop]) {
           this._renderer.setElementStyle(this.element, propMap[prop], this[prop]);
         }
       }
-
+console.log( "======================= background-image ================================");
       this._renderer.setElementStyle(this.element, 'background-image', 'url(\'' + ( imageUrl || this.fallbackUrl ) + '\')');
     }
-
+console.log( "======================= load.emit ================================");
     this.load.emit(this);
 
   }
