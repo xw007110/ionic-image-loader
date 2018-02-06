@@ -79,7 +79,7 @@ export class ImageLoader {
     private http: HttpClient,
     private platform: Platform
   ) {
-	  alert('ImageLoader');
+	   
     if (!platform.is('cordova')) {
       // we are running on a browser, or using livereload
       // plugin will not function in this case
