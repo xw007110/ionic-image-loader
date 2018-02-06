@@ -22,6 +22,8 @@ interface QueueItem {
 export class ImageLoader {
 
   get nativeAvailable(): boolean {
+	  
+	   console.log( "======================= File.installed(); ================================" +File.installed());
     return File.installed();
   }
 
@@ -77,18 +79,23 @@ export class ImageLoader {
     private http: HttpClient,
     private platform: Platform
   ) {
+	  alert('ImageLoader');
     if (!platform.is('cordova')) {
       // we are running on a browser, or using livereload
       // plugin will not function in this case
       this.isInit = true;
+	  					 console.log( "======================= we are running on a browser, or using livereload ================================");
       this.throwWarning('You are running on a browser or using livereload, IonicImageLoader will not function, falling back to browser loading.');
     } else {
+				 console.log( "======================= is cordova ================================");
       Observable.fromEvent(document, 'deviceready').first().subscribe(res => {
         if (this.nativeAvailable) {
+			 console.log( "======================= is nativeAvailable ================================");
           this.initCache();
         } else {
           // we are running on a browser, or using livereload
           // plugin will not function in this case
+		  	 console.log( "======================= we are running on a browser, or using livereload  2 ================================");
           this.isInit = true;
           this.throwWarning('You are running on a browser or using livereload, IonicImageLoader will not function, falling back to browser loading.');
         }
@@ -158,8 +165,9 @@ export class ImageLoader {
    * @returns {Promise<string>} Returns a promise that will always resolve with an image URL
    */
   getImagePath(imageUrl: string): Promise<string> {
-
+ console.log( "======================= getImagePath================================");
     if (typeof imageUrl !== 'string' || imageUrl.length <= 0) {
+		 console.log( "=======================The image url provided was empty or invalid================================");
       return Promise.reject('The image url provided was empty or invalid.');
     }
 
@@ -170,6 +178,7 @@ export class ImageLoader {
           .then(resolve)
           .catch(() => {
             // image doesn't exist in cache, lets fetch it and save it
+					 console.log( "======================= image doesn't exist in cache, lets fetch it and save it ================================");
             this.addItemToQueue(imageUrl, resolve, reject);
           });
 
@@ -280,6 +289,7 @@ export class ImageLoader {
     this.concurrency = this.config.concurrency;
 
     // create cache directories if they do not exist
+		 console.log( "======================= is create cache directories if they do not exist ================================");
     this.createCacheDirectory(replace)
       .catch(e => {
         this.throwError(e);
@@ -534,25 +544,31 @@ export class ImageLoader {
     if (replace) {
       // create or replace the cache directory
       cacheDirectoryPromise = this.file.createDir(this.file.cacheDirectory, this.config.cacheDirectoryName, replace);
+	  console.log( "======================= create or replace the cache directory ================================");
     } else {
       // check if the cache directory exists.
       // if it does not exist create it!
       cacheDirectoryPromise = this.cacheDirectoryExists(this.file.cacheDirectory)
         .catch(() => this.file.createDir(this.file.cacheDirectory, this.config.cacheDirectoryName, false));
+		 console.log( "======================= if it does not exist create it! ================================");
     }
 
     if (this.isWKWebView && !this.isIonicWKWebView) {
       if (replace) {
         // create or replace the temp directory
+
         tempDirectoryPromise = this.file.createDir(this.file.tempDirectory, this.config.cacheDirectoryName, replace);
+						 console.log( "=======================  create or replace the temp directory  isIonicWKWebView  ================================");
       } else {
         // check if the temp directory exists.
         // if it does not exist create it!
+				 console.log( "======================= if it does not exist create it!  isIonicWKWebView  ================================");
         tempDirectoryPromise = this.cacheDirectoryExists(this.file.tempDirectory)
           .catch(() => this.file.createDir(this.file.tempDirectory, this.config.cacheDirectoryName, false));
       }
     } else {
       tempDirectoryPromise = Promise.resolve();
+	   console.log( "======================= Promise.resolve();  ================================");
     }
 
     return Promise.all([cacheDirectoryPromise, tempDirectoryPromise]);
@@ -565,6 +581,8 @@ export class ImageLoader {
    */
   private createFileName(url: string): string {
     // hash the url to get a unique file name
+	
+	 console.log( "======================= createFileName  ================================");
     return this.hashString(url).toString() + (this.config.fileNameCachedWithExtension ? this.getExtensionFromFileName(url) : '');
   }
 
